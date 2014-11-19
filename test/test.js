@@ -72,6 +72,20 @@ describe('ical-generator', function() {
 
 			assert(cal.toString().indexOf('UTC+8') > -1);
 		});
+
+		it('should include region strings in event entries', function() {
+			var generator = require(__dirname + '/../lib/ical-generator.js'),
+				cal = generator();
+
+			cal.setTZ('America/New_York');
+			cal.addEvent({
+				start: new Date(),
+				end: new Date(new Date().getTime() + 3600000),
+				summary: 'Example Event'
+			});
+
+			assert(cal.toString().indexOf('DTSTART;TZID=America/New_York:') > -1);
+		});
 	});
 
 
