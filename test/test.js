@@ -86,6 +86,24 @@ describe('ical-generator', function() {
 
 			assert(cal.toString().indexOf('DTSTART;TZID=America/New_York:') > -1);
 		});
+
+		it('should support specification of offset and region', function() {
+			var generator = require(__dirname + '/../lib/ical-generator.js'),
+				cal = generator();
+
+			cal.setTZ({
+				offset: 'UTC-5',
+				region: 'America/New_York'
+			});
+			cal.addEvent({
+				start: new Date(),
+				end: new Date(new Date().getTime() + 3600000),
+				summary: 'Example Event'
+			});
+
+			assert(cal.toString().indexOf('UTC-5') > -1);
+			assert(cal.toString().indexOf('DTSTART;TZID=America/New_York:') > -1);
+		});
 	});
 
 
